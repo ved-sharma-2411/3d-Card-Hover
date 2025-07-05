@@ -1,0 +1,277 @@
+:root {
+    --card-height: 300px;
+    --card-width: calc(var(--card-height) / 1.5);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Animated Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(120, 198, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 0% 0%, rgba(255, 255, 0, 0.2) 0%, transparent 50%);
+    animation: floatingBubbles 20s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes floatingBubbles {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-30px) rotate(120deg); }
+    66% { transform: translateY(-60px) rotate(240deg); }
+}
+
+/* Typing Animation Styles */
+.typing-container {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    text-align: center;
+}
+
+.typing-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080);
+    background-size: 400% 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 0 10px rgba(255, 0, 128, 0.5),
+        0 0 20px rgba(255, 140, 0, 0.4),
+        0 0 30px rgba(64, 224, 208, 0.3);
+    overflow: hidden;
+    border-right: 3px solid #ff0080;
+    white-space: nowrap;
+    margin: 0;
+    letter-spacing: 0.05em;
+    display: inline-block;
+    width: 0;
+    max-width: max-content;
+    animation: typeAndDelete 6s infinite, rainbowText 3s ease-in-out infinite;
+}
+
+@keyframes rainbowText {
+    0%, 100% { 
+        background-position: 0% 50%;
+        border-right-color: #ff0080;
+    }
+    25% { 
+        background-position: 25% 50%;
+        border-right-color: #ff8c00;
+    }
+    50% { 
+        background-position: 50% 50%;
+        border-right-color: #40e0d0;
+    }
+    75% { 
+        background-position: 75% 50%;
+        border-right-color: #ff0080;
+    }
+}
+
+@keyframes typeAndDelete {
+    0% { width: 0; }
+    25% { width: 100%; }
+    50% { width: 100%; }
+    75% { width: 0; }
+    100% { width: 0; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #ff0080; }
+}
+
+.typing-text::after {
+    content: '';
+    animation: blink-caret 0.75s step-end infinite;
+}
+
+/* Cards Container */
+.cards-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+    margin-top: 140px;
+    padding: 20px;
+    min-height: calc(100vh - 140px);
+    width: 100%;
+}
+
+.card {
+    width: var(--card-width);
+    height: var(--card-height);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0 36px;
+    perspective: 2500px;
+    margin: 0;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.wrapper {
+    transition: all 0.5s;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card:hover .wrapper {
+    transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+    box-shadow: 
+        2px 35px 32px -8px rgba(0, 0, 0, 0.75),
+        0 0 50px rgba(255, 0, 128, 0.3),
+        0 0 100px rgba(64, 224, 208, 0.2);
+    -webkit-box-shadow: 
+        2px 35px 32px -8px rgba(0, 0, 0, 0.75),
+        0 0 50px rgba(255, 0, 128, 0.3),
+        0 0 100px rgba(64, 224, 208, 0.2);
+    -moz-box-shadow: 
+        2px 35px 32px -8px rgba(0, 0, 0, 0.75),
+        0 0 50px rgba(255, 0, 128, 0.3),
+        0 0 100px rgba(64, 224, 208, 0.2);
+    filter: blur(2px);
+}
+
+.wrapper::before,
+.wrapper::after {
+    content: "";
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    transition: all 0.5s;
+    position: absolute;
+    left: 0;
+}
+
+.wrapper::before {
+    top: 0;
+    height: 100%;
+    background-image: linear-gradient(to top,
+            transparent 46%,
+            rgba(12, 13, 19, 0.5) 68%,
+            rgba(12, 13, 19) 97%);
+}
+
+.wrapper::after {
+    bottom: 0;
+    opacity: 1;
+    background-image: linear-gradient(to bottom,
+            transparent 46%,
+            rgba(12, 13, 19, 0.5) 68%,
+            rgba(12, 13, 19) 97%);
+}
+
+.card:hover .wrapper::before,
+.wrapper::after {
+    opacity: 1;
+}
+
+.card:hover .wrapper::after {
+    height: 120px;
+}
+
+.title {
+    width: 100%;
+    transition: transform 0.5s;
+    max-width: 100%;
+}
+
+.card:hover .title {
+    transform: translate3d(0%, -50px, 100px);
+}
+
+.character {
+    width: 100%;
+    opacity: 0;
+    transition: all 0.5s;
+    position: absolute;
+    z-index: -1;
+    max-width: 100%;
+}
+
+.card:hover .character {
+    opacity: 1;
+    transform: translate3d(0%, -30%, 100px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .typing-text {
+        font-size: 1.5rem;
+    }
+    
+    .cards-container {
+        flex-direction: column;
+        margin-top: 120px;
+        gap: 60px;
+    }
+    
+    :root {
+        --card-height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .typing-text {
+        font-size: 1.2rem;
+    }
+    
+    .cards-container {
+        flex-direction: column;
+        margin-top: 100px;
+        gap: 40px;
+    }
+    
+    :root {
+        --card-height: 200px;
+    }
+}
